@@ -7,23 +7,18 @@ from penalty import penalty_instance
 maxNumberOfGuesses = 7
 wrongGuessCount = 0
 guessedLetters = []
+userUpdatedWord = []
+
+
+def UpdatedWord(word, userLetterGuess):
+
+    for n in range(len(word)):
+         if(userLetterGuess == word[n]):
+             userUpdatedWord[n] = userLetterGuess
 
 
 
-def UpdatedWord(word,guessed_Letters):
-    # create variable to hold correct guessed in the order they appear
-    updated_word = "" 
-    #loop through for to find letter
-    for letter in word:
-        if letter in guessed_Letters:
-            updated_word += letter + " "
-        else:
-            #show _ if the letter for that slot wasn't guessed
-            updated_word += "_ "
-    return updated_word.strip()
 
-  #To Do:
-  # - Add while loop to continue game
     
 class hangman_game:
     textObj = text_data()
@@ -33,16 +28,17 @@ class hangman_game:
     textObj.greeting()
 
     #get the random word
-    Randomly_Selected_Word = random.choice(wordData.wordList)
+    Randomly_Selected_Word = random.choice(wordData.wordList).upper()
 
-    #Todo: Show the underscored word
-    print(textObj.underScore(Randomly_Selected_Word))
+    userUpdatedWord = textObj.underScore(Randomly_Selected_Word)
+
+    print(userUpdatedWord + "is the word and the length is " + str(len(userUpdatedWord)))
 
     #verify user input is a letter
     # check if they already used it
 
    #  loop to continue game
-    while wrongGuessCount==7:
+    while wrongGuessCount<=7:
       userLetter = input("Please enter a letter: ").upper()
       userLetter = userLetter[0]
 
@@ -61,11 +57,12 @@ class hangman_game:
       if userLetter in Randomly_Selected_Word.upper():
          print("Good Guess the letter "+userLetter+" is in the word")
          #   print updated word
-         print(UpdatedWord(Randomly_Selected_Word,userLetter))
+         UpdatedWord(Randomly_Selected_Word,userLetter)
       else:
          print(userLetter+" is not in the word")
          penalty_instance.draw_hangman(wrongGuessCount)
-        
+
+      print(userUpdatedWord + "is the Updated user word! ")
       wrongGuessCount+=1
       # end while loop
    

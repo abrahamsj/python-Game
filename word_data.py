@@ -1,5 +1,5 @@
 class word_data:
-    wordList = ["Green", "Apple", "Pear", "Money", "Manga", "Food", "Remote", "Water", "Bookbag", "Dictionary"]
+    wordList = ["Green", "Apple", "Pear"]
 
     def isLetter(self, letter):
         if letter.isalpha() == True:
