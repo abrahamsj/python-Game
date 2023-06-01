@@ -9,10 +9,20 @@ class text_data:
     6. Penalty: Incorrect guesses may result in drawn body parts and deductions.\n
     7. Repeated Letters: Guessing the same letter again does not penalize.\n
   """
-
+# formatting titles/text
   def MessageFormat(self,text):
     print('=='*len(text))
     print(text)
     print('=='*len(text))
 
-  
+# WElcome and rules
+  def greeting(self):
+     self.MessageFormat('WELCOME!')
+     print(self.welcome_message)
+     self.MessageFormat('GAME RULES')
+     print(self.rules_Of_game)
+
+  # function to shown unknown words
+  def underScore(self,word):
+    unknownWord = '_' * len(word)
+    return unknownWord
