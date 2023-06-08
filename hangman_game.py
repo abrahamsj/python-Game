@@ -1,71 +1,76 @@
 import random
-
 from text_data import text_data
 from word_data import word_data
-from penalty import penalty_instance
+from penalty import Penalty
 
 maxNumberOfGuesses = 7
-wrongGuessCount = 0
-guessedLetters = []
 
-
-
-def UpdatedWord(word, guessed_Letters):
+def UpdatedWord(word, guessed_letters):
     updated_word = ""
     for letter in word:
-        if letter.upper() in guessed_Letters:
+        if letter.upper() in guessed_letters:
             updated_word += letter + " "
         else:
             updated_word += "_ "
     return updated_word.strip()
 
+class HangmanGame:
+    def __init__(self):
+        self.textObj = text_data()
+        self.wordData = word_data()
+        self.penalty_instance = Penalty()
 
-  #To Do:
-  # - Add while loop to continue game
-    
-class hangman_game:
-    textObj = text_data()
-    wordData = word_data()
-    
-   
-    textObj.greeting()
+    def play_game(self):
+        self.textObj.greeting()
 
-    #get the random word
-    Randomly_Selected_Word = random.choice(wordData.wordList)
+        play_again = True
 
-    #Todo: Show the underscored word
-    print(textObj.underScore(Randomly_Selected_Word))
+        while play_again:
+            # Get a random word
+            randomly_selected_word = random.choice(self.wordData.wordList)
 
-    #verify user input is a letter
-    # check if they already used it
+            # Initialize game variables
+            wrong_guess_count = 0
+            guessed_letters = []
 
-   #  loop to continue game
-    while wrongGuessCount < maxNumberOfGuesses:
-      userLetter = input("Please enter a letter: ").upper()
-      userLetter = userLetter[0]
+            print(self.textObj.underScore(randomly_selected_word))
 
-      while not wordData.isLetter(userLetter) or userLetter.upper() in guessedLetters:
-        userLetter = input("You did not type a letter or you already guessed it! Please type another letter: ")
-        userLetter = userLetter[0]
+            # Loop to continue the game
+            while wrong_guess_count < maxNumberOfGuesses:
+                user_letter = input("Please enter a letter: ").upper()
+                user_letter = user_letter[0]
 
+                while not self.wordData.isLetter(user_letter) or user_letter.upper() in guessed_letters:
+                    user_letter = input("You did not type a letter or you already guessed it! Please type another letter: ")
+                    user_letter = user_letter[0]
 
-      #store userletter in guessed letters
-      guessedLetters.append(userLetter)
+                # Store user letter in guessed letters
+                guessed_letters.append(user_letter)
 
+                if user_letter in randomly_selected_word.upper():
+                    print("Good guess! The letter " + user_letter + " is in the word.")
+                    print(UpdatedWord(randomly_selected_word, guessed_letters))
+                else:
+                    print(user_letter + " is not in the word.")
+                    self.penalty_instance.draw_hangman(wrong_guess_count)
+                    wrong_guess_count += 1
 
-      #Todo: check if userletter is in the guessed word
-      #if true, print something
-      #else print something else
-      if userLetter in Randomly_Selected_Word.upper():
-        print("Good guess! The letter " + userLetter + " is in the word.")
-        print(UpdatedWord(Randomly_Selected_Word, guessedLetters))
-      else:
-        print(userLetter + " is not in the word.")
-        penalty_instance.draw_hangman(wrongGuessCount)
-        wrongGuessCount += 1
+                if UpdatedWord(randomly_selected_word, guessed_letters) == randomly_selected_word:
+                    print("Congratulations! You guessed the word correctly.")
+                    break
 
-      if UpdatedWord(Randomly_Selected_Word, guessedLetters) == Randomly_Selected_Word:
-        break
+            # Check if the game ended
+            if wrong_guess_count == maxNumberOfGuesses:
+                print("You reached the maximum number of guesses. The word was: " + randomly_selected_word)
+            elif UpdatedWord(randomly_selected_word, guessed_letters) == randomly_selected_word:
+                print("Congratulations! You guessed the word correctly.")
 
-            # end while loop
-         
+            # Check if the player wants to play again
+            play_again_input = input("Do you want to play again? (Y/N): ").upper()
+            play_again = play_again_input == "Y"
+
+        print("Thank you for playing!")
+
+# Create an instance of HangmanGame and play the game
+game = HangmanGame()
+game.play_game()

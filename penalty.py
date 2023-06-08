@@ -1,5 +1,6 @@
-class penalty:
-    def draw_hangman(self,stages):
+class Penalty:
+    @staticmethod
+    def draw_hangman(stage):
         stages = [
             # stage 0
             """
@@ -61,7 +62,7 @@ class penalty:
                   |
             ______|___
             """,
-            # stage6
+            # stage 6
             """
             ________
             |      |
@@ -73,10 +74,3 @@ class penalty:
             """
         ]
         print(stages[stage])
-
-# Create an instance of the Penalty class
-penalty_instance = penalty()
-
-# Test with default stage 0
-stage = 0
-penalty_instance.draw_hangman(stage)
