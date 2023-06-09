@@ -6,3 +6,6 @@ class word_data:
             return True
         else:
             return False
+
+    file1 = open("mit.edu_~ecprice_wordlist.10000.txt", "r");
+    file1.readlines();
